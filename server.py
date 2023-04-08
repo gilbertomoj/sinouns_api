@@ -4,6 +4,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 import json
 from pydantic import BaseSettings
 from dotenv import load_dotenv
+from scrapper import Scrapper
 
 class Settings(BaseSettings):
     app_name: str = "Sinouns API"
@@ -32,7 +33,18 @@ async def get_word(request: Request, country: str | None = None):
         body = await request.body()
         body = json.loads(body)
 
-        return JSONResponse(status_code=200, content={"message": body, "country": country})
+        if country == "" or country == None:
+            return JSONResponse(status_code=400, content={"message": "País não informado"})
+
+        if body["word"] == "" or body["word"] == None:
+            return JSONResponse(status_code=400, content={"message": "Palavra não informada"})
+
+        scrapper = Scrapper(body["word"], country)
+
+        if scrapper.sinons == []:
+            return JSONResponse(status_code=404, content={"message": "Não existem sinonimos para a palavra informada"})
+        else:
+            return JSONResponse(status_code=200, content={"message": scrapper.sinons})
 
     except ValueError as e:
         return JSONResponse(status_code=500, content={"message": "Error: {}".format(e)})

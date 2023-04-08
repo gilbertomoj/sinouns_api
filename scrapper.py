@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 from unidecode import unidecode
 
 class Scrapper:
-    def __init__(self, string, country, sinons = []):
-        self.string = string
+    def __init__(self, word, country, sinons = []):
+        self.word = word
         self.country = country
         self.sinons = sinons
 
@@ -12,7 +12,7 @@ class Scrapper:
 
     def get_sinons(self):
 
-        text = unidecode(self.string)
+        text = unidecode(self.word)
         clean_text = text.replace("ç", "c")
 
         if self.country == 'br':    
@@ -27,8 +27,9 @@ class Scrapper:
 
                 self.sinons = [resp.text for resp in resps]
 
-            except: 
-                print("erro")
+            except Exception as e: 
+                print(e)
+
 
         elif self.country == 'us':
             try:
@@ -42,5 +43,12 @@ class Scrapper:
 
                 self.sinons = [resp.text for resp in resps]
                 
-            except:
-                print("erro")
+            except Exception as e: 
+                print(e)
+
+        
+    def get_br_page(self, word):
+        pass
+
+    def get_us_page(self, word):
+        pass
