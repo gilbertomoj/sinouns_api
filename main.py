@@ -17,7 +17,7 @@ print("       SERVICE: {}".format(settings.app_name))
 
 
 @app.get("/")
-def route():
+async def route():
     try:
         return JSONResponse(status_code=200, content={"message": "Hello World"})
 
@@ -28,7 +28,7 @@ def route():
         return JSONResponse(status_code=500, content={"message": "Error: {}".format(e)})
 
 @app.post("/word/")
-async def get_word(request: Request, country: str | None = None):
+async def get_word(request: Request, country: str):
     try:
         body = await request.body()
         body = json.loads(body)
