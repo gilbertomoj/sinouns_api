@@ -1,10 +1,18 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import json
 from pydantic import BaseSettings
 from dotenv import load_dotenv
 from scrapper import Scrapper
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
 
 class Settings(BaseSettings):
     app_name: str = "Sinouns API"
@@ -51,3 +59,12 @@ async def get_word(request: Request, country: str):
 
     except Exception as e:
         return JSONResponse(status_code=500, content={"message": "Error: {}".format(e)})
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
