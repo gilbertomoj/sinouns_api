@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 from scrapper import Scrapper
 
 origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:8080",
+    "https://sinouns-1-x6008571.deta.app/"
+    "https://sinouns-1-x6008571.deta.app"
 ]
 
 class Settings(BaseSettings):
